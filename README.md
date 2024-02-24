@@ -1,2 +1,2 @@
 # esp8266_websocket
- Communicating with ESP8266 devices using WebSocket
+HTML, Python WebSocket server, and ESP8266 codes for printing messages received from a simple web page onto an I2C LCD connected to an ESP8266 device.

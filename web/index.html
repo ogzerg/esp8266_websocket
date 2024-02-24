@@ -1,0 +1,60 @@
+<html ng-app="app">
+
+<head>
+    <script type="text/javascript">
+        var myWebSocket = new WebSocket("ws://ip_addr:port/Esp"); // or use wss
+        myWebSocket.onmessage = function (event) {
+            var leng;
+            if (event.data.size === undefined) {
+                leng = event.data.length
+            } else {
+                leng = event.data.size
+            }
+            console.log("onmessage. size: " + leng + ", content: " + event.data);
+        }
+        myWebSocket.onopen = function (evt) {
+            console.log("onopen.");
+        };
+        // myWebSocket.onclose = function (evt) {
+        //     console.log("onclose.");
+        // };
+        myWebSocket.onerror = function (evt) {
+            console.log("Error!");
+        };
+        function sendMsg() {
+            var sender = document.getElementById("sender").value;
+            var message = document.getElementById("myMessage").value;
+            var obj = new Object();
+            obj.mission = "message";
+            obj.sender = sender;
+            obj.message = message;
+            myWebSocket.send(JSON.stringify(obj));
+        }
+        function tOffLight() {
+            var obj = new Object();
+            obj.mission = "lightOff";
+            myWebSocket.send(JSON.stringify(obj))
+        }
+        function tOnLight() {
+            var obj = new Object();
+            obj.mission = "lightOn";
+            myWebSocket.send(JSON.stringify(obj))
+        }
+        function closeConn() {
+            myWebSocket.close();
+        }
+    </script>
+</head>
+
+<body>
+    <form>
+        Sender:<br> <input type="text" id="sender" name="sender"><br>
+        Message:<br> <input type="text" id="myMessage" name="myMessage"><br>
+    </form>
+    <input type="button" onclick="sendMsg()" value="Send Message" /><br><br>
+    <input type="button" onclick="tOffLight()" value="Turn off the light" /><br><br>
+    <input type="button" onclick="tOnLight()" value="Turn on the light" /><br>
+    <!-- <input type="button" onclick="closeConn()" value="Close connection" /> -->
+</body>
+
+</html>
